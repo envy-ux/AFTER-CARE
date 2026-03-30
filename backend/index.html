@@ -817,7 +817,7 @@
 </div>
 
 <script>
-const API_URL = "https://after-care.onrender.com";
+const API_URL = fetch("http://localhost:5000/api/symptom")
 function enterApp(role) {
   try {
     document.getElementById('portal-screen').style.display = 'none';
