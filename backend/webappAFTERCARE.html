@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AFTER-CARE</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #4caf6e;
+    --green-dark: #3a9459;
+    --green-sidebar: #4caf6e;
+    --bg: #e8ebe4;
+    --card: #d6dbd2;
+    --white: #fff;
+    --text-dark: #1a2218;
+    --text-muted: #555;
+    --btn-dark: #1e3a2f;
+    --red: #e05353;
+    --sidebar-w: 190px;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── PORTAL SCREEN ── */
+  #portal-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #e8ebe4;
+    gap: 40px;
+  }
+  #portal-screen h1 {
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--text-dark);
+    text-transform: uppercase;
+  }
+  .portal-cards {
+    display: flex;
+    gap: 28px;
+  }
+  .portal-card {
+    background: var(--green);
+    border-radius: 16px;
+    width: 220px;
+    padding: 36px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: transform .18s, box-shadow .18s;
+    box-shadow: 0 4px 18px #0002;
+  }
+  .portal-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px #0003; }
+  .portal-icon-wrap {
+    background: #fff;
+    border-radius: 50%;
+    width: 80px; height: 80px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .portal-icon-wrap svg { width: 48px; height: 48px; }
+  .portal-card h2 {
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  .portal-card p {
+    font-size: .82rem;
+    color: #ffffffcc;
+    text-align: center;
+    line-height: 1.45;
+  }
+
+  /* ── MAIN APP ── */
+  #app { display: none; flex-direction: row; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--green-sidebar);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 12px 20px;
+    gap: 6px;
+    min-height: 100vh;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 10;
+  }
+  .sidebar-section-label {
+    font-weight: 800;
+    font-size: .88rem;
+    color: var(--text-dark);
+    padding: 10px 6px 4px;
+    letter-spacing: .3px;
+  }
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.18);
+    border: none;
+    border-radius: 30px;
+    padding: 9px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: background .15s;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.38); }
+  .nav-btn svg { flex-shrink: 0; width: 20px; height: 20px; }
+  .sidebar-bottom {
+    margin-top: auto;
+  }
+  .settings-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: none; border: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 800;
+    color: var(--text-dark);
+    cursor: pointer;
+    padding: 6px 6px;
+  }
+
+  /* Main content */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* Topbar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px 0;
+  }
+  .search-bar {
+    display: flex; align-items: center;
+    background: var(--btn-dark);
+    border-radius: 30px;
+    padding: 8px 18px;
+    gap: 10px;
+    width: 260px;
+  }
+  .search-bar input {
+    background: none; border: none; outline: none;
+    color: #aac;
+    font-family: 'Nunito', sans-serif;
+    font-size: .9rem;
+    width: 100%;
+  }
+  .search-bar svg { color: #aac; width: 18px; height: 18px; flex-shrink: 0; }
+  .profile-btn {
+    display: flex; flex-direction: column; align-items: center;
+    background: none; border: none; cursor: pointer;
+    gap: 2px;
+  }
+  .profile-btn svg { width: 40px; height: 40px; }
+  .profile-btn span { font-size: .72rem; font-weight: 700; color: var(--text-dark); }
+
+  /* Page content */
+  .page-content {
+    flex: 1;
+    padding: 18px 28px 0;
+  }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* Page title */
+  .page-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.35rem; font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .page-subtitle {
+    font-size: .83rem; color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  /* Disclaimer */
+  .disclaimer {
+    background: var(--red);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    color: #fff;
+    font-size: .82rem;
+  }
+  .disclaimer strong { display: block; font-weight: 800; margin-bottom: 3px; }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-weight: 800; font-size: .95rem; color: var(--text-dark);
+    margin-bottom: 12px;
+  }
+
+  /* Textarea */
+  .symptom-textarea {
+    width: 100%; min-height: 90px;
+    background: transparent; border: none; outline: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: .9rem; color: var(--text-dark);
+    resize: vertical;
+  }
+
+  /* Buttons */
+  .btn-green {
+    background: var(--green);
+    border: none; border-radius: 8px;
+    padding: 10px 22px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700; font-size: .88rem;
+    color: #fff; cursor: pointer;
+    transition: background .15s;
+    display: inline-block;
+  }
+  .btn-green:hover { background: var(--green-dark); }
+
+  /* Lab upload */
+  .upload-area {
+    min-height: 120px;
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 4px;
+  }
+  .upload-label {
+    font-size: .83rem; color: var(--text-muted); margin-bottom: 8px;
+  }
+
+  /* Dosage */
+  .today-label {
+    font-weight: 700; color: var(--text-dark);
+    font-size: .95rem; margin-bottom: 10px;
+  }
+  .med-header {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .add-btn {
+    background: var(--green);
+    border: none; border-radius: 6px;
+    padding: 6px 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700; font-size: .82rem;
+    color: #fff; cursor: pointer;
+  }
+  .med-list { margin-top: 10px; min-height: 80px; }
+  .med-item {
+    background: #c8cfc4;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: .85rem; font-weight: 600;
+  }
+  .med-item .del-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--red); font-size: 1.1rem; font-weight: 800;
+  }
+
+  /* Fitness */
+  .activity-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+    margin-bottom: 4px;
+  }
+  .activity-box {
+    background: var(--btn-dark);
+    border-radius: 12px; padding: 18px 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: #fff;
+  }
+  .activity-box .val { font-size: 1.5rem; font-weight: 800; }
+  .activity-box .lbl { font-size: .75rem; color: #aac; }
+
+  /* Vitals */
+  .vitals-grid {
+    display: grid; grid-template-columns: repeat(2,1fr); gap: 12px;
+    margin-top: 10px;
+  }
+  .vital-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .vital-card .vl { font-size: 1.3rem; font-weight: 800; color: var(--green-dark); }
+  .vital-card .vn { font-size: .78rem; color: var(--text-muted); margin-top: 2px; }
+  .vital-input {
+    width: 100%; border: none; border-bottom: 2px solid var(--green);
+    background: transparent; font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 700; outline: none;
+    color: var(--text-dark); margin-top: 4px;
+  }
+
+  /* Appointments */
+  .appt-item {
+    background: var(--card);
+    border-radius: 10px; padding: 12px 16px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .appt-info .doc { font-weight: 700; font-size: .9rem; }
+  .appt-info .time { font-size: .78rem; color: var(--text-muted); }
+  .appt-badge {
+    background: var(--green); color: #fff;
+    border-radius: 20px; padding: 4px 12px;
+    font-size: .75rem; font-weight: 700;
+  }
+
+  /* AI response area */
+  .ai-response {
+    background: var(--card);
+    border-radius: 12px; padding: 16px;
+    margin-top: 12px;
+    font-size: .87rem; color: var(--text-dark);
+    line-height: 1.6;
+    display: none;
+  }
+  .ai-response.visible { display: block; }
+
+  /* Loading spinner */
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 3px solid #fff4;
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 16px;
+    font-size: .82rem;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  /* Chatbot FAB */
+  .chat-fab {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--btn-dark);
+    border-radius: 50%;
+    width: 54px; height: 54px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 16px #0004;
+    z-index: 100;
+    border: none;
+    transition: transform .15s;
+  }
+  .chat-fab:hover { transform: scale(1.1); }
+  .chat-fab svg { width: 30px; height: 30px; }
+
+  /* Modal for add med */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: #0005;
+    z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 24px;
+    width: 320px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .modal h3 { font-weight: 800; font-size: 1rem; }
+  .modal input, .modal select {
+    width: 100%; border: 2px solid var(--card);
+    border-radius: 8px; padding: 9px 12px;
+    font-family: 'Nunito', sans-serif; font-size: .88rem;
+    outline: none;
+  }
+  .modal input:focus, .modal select:focus { border-color: var(--green); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .modal-cancel {
+    background: #eee; border: none; border-radius: 8px;
+    padding: 9px 18px; font-family: 'Nunito', sans-serif;
+    font-weight: 700; cursor: pointer;
+  }
+
+  /* Home / dashboard page */
+  .home-hero {
+    background: var(--green);
+    border-radius: 16px;
+    padding: 22px 24px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .home-hero h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+  .home-hero p { font-size: .85rem; opacity: .88; }
+  .quick-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+  }
+  .quick-card {
+    background: var(--card);
+    border-radius: 12px; padding: 18px 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer; transition: background .15s;
+    border: none;
+  }
+  .quick-card:hover { background: #c4cbbf; }
+  .quick-card svg { width: 32px; height: 32px; color: var(--green-dark); }
+  .quick-card span { font-size: .8rem; font-weight: 700; color: var(--text-dark); text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ PORTAL SCREEN ════════════════ -->
+<div id="portal-screen">
+  <h1>AFTER-CARE</h1>
+<p style="font-size:0.9rem; color:#555;">Choose Your Portal</p>
+  <div class="portal-cards">
+    <div class="portal-card" onclick="enterApp('patient')">
+      <div class="portal-icon-wrap">
+        <!-- Patient icon -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="20" r="12" stroke="#333" stroke-width="3"/>
+          <path d="M12 52c0-11 9-18 20-18s20 7 20 18" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+          <rect x="26" y="34" width="12" height="16" rx="2" stroke="#333" stroke-width="2.5"/>
+          <path d="M29 38h6M29 42h6" stroke="#e05353" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>Patient</h2>
+      <p>Access your health records and get quick help</p>
+    </div>
+    <div class="portal-card" onclick="enterApp('doctor')">
+      <div class="portal-icon-wrap">
+        <!-- Doctor/stethoscope icon -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="44" cy="44" r="9" stroke="#333" stroke-width="3"/>
+          <circle cx="44" cy="44" r="3" fill="#333"/>
+          <path d="M16 14h6a10 10 0 0010 10v8a12 12 0 01-24 0v-8A10 10 0 0016 14z" stroke="#333" stroke-width="3"/>
+          <path d="M28 32c6 0 12 4 12 12" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>Doctor</h2>
+      <p>Manage patients and deliver better care</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ MAIN APP ════════════════ -->
+<div id="app">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-section-label">HealthCare Tools-</div>
+    <button class="nav-btn active" onclick="showPage('home',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="nav-btn" onclick="showPage('symptom',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Symptom Analyzer
+    </button>
+    <button class="nav-btn" onclick="showPage('lab',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4"/><rect x="9" y="1" width="6" height="4" rx="1"/></svg>
+      Lab Report Analyzer
+    </button>
+    <button class="nav-btn" onclick="showPage('dosage',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+      Dosage Reminder
+    </button>
+    <button class="nav-btn" onclick="showPage('fitness',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      Fitness Coach
+    </button>
+    <button class="nav-btn" onclick="showPage('vitals',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Vitals Check
+    </button>
+
+    <div class="sidebar-section-label" style="margin-top:10px;">Appointments-</div>
+    <button class="nav-btn" onclick="showPage('appointments',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      My Appointments
+    </button>
+    <button class="nav-btn" onclick="showPage('labreports',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Lab Reports
+    </button>
+
+    <div class="sidebar-bottom">
+      <button class="settings-btn" onclick="showPage('settings',this)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main area -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search" />
+      </div>
+      <button class="profile-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+      </button>
+    </div>
+
+    <!-- Pages -->
+    <div class="page-content">
+
+      <!-- HOME -->
+      <div class="page active" id="page-home">
+        <div class="home-hero">
+          <h2>Welcome to Smarter HealthCare 👋</h2>
+          <p>Your AI-powered health companion. Choose a tool to get started.</p>
+        </div>
+        <div class="quick-grid">
+          <button class="quick-card" onclick="showPage('symptom', document.querySelector('.nav-btn:nth-child(3)'))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span>Symptom Analyzer</span>
+          </button>
+          <button class="quick-card" onclick="showPage('lab', document.querySelector('.nav-btn:nth-child(4)'))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4"/><rect x="9" y="1" width="6" height="4" rx="1"/></svg>
+            <span>Lab Report Analyzer</span>
+          </button>
+          <button class="quick-card" onclick="showPage('dosage', document.querySelector('.nav-btn:nth-child(5)'))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+            <span>Dosage Reminder</span>
+          </button>
+          <button class="quick-card" onclick="showPage('fitness', document.querySelector('.nav-btn:nth-child(6)'))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>
+            <span>Fitness Coach</span>
+          </button>
+          <button class="quick-card" onclick="showPage('vitals', document.querySelector('.nav-btn:nth-child(7)'))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Vitals Check</span>
+          </button>
+          <button class="quick-card" onclick="showPage('appointments', document.querySelector('.nav-btn:nth-child(9)'))">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>My Appointments</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SYMPTOM ANALYZER -->
+      <div class="page" id="page-symptom">
+        <div class="page-title">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          AI SYMPTOM ANALYZER-
+        </div>
+        <div class="page-subtitle">Describe your symptom, let AI guide you.</div>
+        <div class="disclaimer">
+          <strong>Disclaimer:</strong>
+          This tool is for informational purposes only and is not a substitute for professional medical advice. Always consult a doctor for any health concerns.
+        </div>
+        <div class="card">
+          <div class="card-title">Describe Your Symptoms</div>
+          <textarea class="symptom-textarea" id="symptom-input" placeholder="e.g. I have a headache, fever and sore throat for 2 days..."></textarea>
+          <br/>
+          <button class="btn-green" id="analyze-btn" onclick="analyzeSymptoms()">Analyze Your Symptoms</button>
+        </div>
+        <div class="ai-response" id="symptom-result"></div>
+      </div>
+
+      <!-- LAB REPORT ANALYZER -->
+      <div class="page" id="page-lab">
+        <div class="page-title">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2h-4"/><rect x="9" y="1" width="6" height="4" rx="1"/></svg>
+          LAB REPORT ANALYZER-
+        </div>
+        <div class="page-subtitle">Upload a photo of your lab report for a detailed, AI–powered explanation.</div>
+        <div class="card">
+          <div class="card-title">Upload Your Lab Report</div>
+          <div class="upload-area">
+            <div class="upload-label">Click to upload a JPG or PNG image of your report</div>
+            <input type="file" id="lab-file" accept="image/*,.pdf" style="display:none" onchange="handleLabUpload(event)"/>
+            <button class="btn-green" onclick="document.getElementById('lab-file').click()">📂 Choose File</button>
+            <div id="lab-filename" style="font-size:.8rem;color:#666;margin-top:6px;"></div>
+            <div id="lab-preview" style="margin-top:10px;"></div>
+          </div>
+          <br/>
+          <button class="btn-green" id="analyze-lab-btn" onclick="analyzeLabReport()">Analyze Report</button>
+        </div>
+        <div class="ai-response" id="lab-result"></div>
+      </div>
+
+      <!-- DOSAGE REMINDER -->
+      <div class="page" id="page-dosage">
+        <div class="page-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+          DOSAGE REMINDER-
+        </div>
+        <div class="page-subtitle">Track and manage your daily medications.</div>
+        <div class="today-label" id="today-date"></div>
+        <div class="card">
+          <div class="med-header">
+            <div class="card-title" style="margin:0">Your Medications</div>
+            <button class="add-btn" onclick="openMedModal()">+Add New</button>
+          </div>
+          <div class="med-list" id="med-list">
+            <div style="font-size:.82rem;color:#888;margin-top:10px;">No medications added yet.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FITNESS COACH -->
+      <div class="page" id="page-fitness">
+        <div class="page-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          FITNESS COACH-
+        </div>
+        <div class="page-subtitle">Your personalized guide to a healthier lifestyle.</div>
+        <div class="card">
+          <div class="card-title">Today's Activity</div>
+          <div style="font-size:.8rem;color:#888;margin-bottom:10px;">Simulated data from your connected device.</div>
+          <div class="activity-grid">
+            <div class="activity-box">
+              <div class="val" id="steps-val">6,842</div>
+              <div class="lbl">Steps</div>
+            </div>
+            <div class="activity-box">
+              <div class="val" id="cal-val">312</div>
+              <div class="lbl">Calories</div>
+            </div>
+            <div class="activity-box">
+              <div class="val" id="active-val">47m</div>
+              <div class="lbl">Active Time</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Your Health Profile</div>
+          <div style="margin-bottom:6px;">
+            <label style="font-size:.83rem;font-weight:700;">Your Primary Goal-</label>
+            <select id="fitness-goal" style="margin-left:8px;border:1px solid #ccc;border-radius:6px;padding:4px 8px;font-family:'Nunito',sans-serif;font-size:.83rem;">
+              <option>Weight Loss</option>
+              <option>Muscle Gain</option>
+              <option>Maintain Weight</option>
+              <option>Improve Endurance</option>
+            </select>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:.83rem;font-weight:700;">Progress Rate-</label>
+            <span id="progress-rate" style="margin-left:8px;font-size:.83rem;color:var(--green-dark);font-weight:700;">On Track ✓</span>
+          </div>
+          <button class="btn-green" onclick="generateFitnessPlan()">Generate My AI plan</button>
+        </div>
+        <div class="ai-response" id="fitness-result"></div>
+      </div>
+
+      <!-- VITALS CHECK -->
+      <div class="page" id="page-vitals">
+        <div class="page-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          VITALS CHECK-
+        </div>
+        <div class="page-subtitle">Monitor and log your key health vitals.</div>
+        <div class="vitals-grid">
+          <div class="vital-card">
+            <div class="vn">Blood Pressure</div>
+            <input class="vital-input" placeholder="e.g. 120/80" id="bp-val"/>
+          </div>
+          <div class="vital-card">
+            <div class="vn">Heart Rate (bpm)</div>
+            <input class="vital-input" placeholder="e.g. 72" id="hr-val"/>
+          </div>
+          <div class="vital-card">
+            <div class="vn">Blood Sugar (mg/dL)</div>
+            <input class="vital-input" placeholder="e.g. 95" id="bs-val"/>
+          </div>
+          <div class="vital-card">
+            <div class="vn">SpO2 (%)</div>
+            <input class="vital-input" placeholder="e.g. 98" id="spo2-val"/>
+          </div>
+          <div class="vital-card">
+            <div class="vn">Temperature (°F)</div>
+            <input class="vital-input" placeholder="e.g. 98.6" id="temp-val"/>
+          </div>
+          <div class="vital-card">
+            <div class="vn">Weight (kg)</div>
+            <input class="vital-input" placeholder="e.g. 70" id="wt-val"/>
+          </div>
+        </div>
+        <br/>
+        <button class="btn-green" onclick="analyzeVitals()" style="margin-top:10px;">Analyze My Vitals</button>
+        <div class="ai-response" id="vitals-result"></div>
+      </div>
+
+      <!-- MY APPOINTMENTS -->
+      <div class="page" id="page-appointments">
+        <div class="page-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          MY APPOINTMENTS-
+        </div>
+        <div class="page-subtitle">Your upcoming and past doctor visits.</div>
+        <div id="appt-list">
+          <div class="appt-item">
+            <div class="appt-info">
+              <div class="doc">Dr. Priya Mehta — Cardiologist</div>
+              <div class="time">Apr 3, 2026 · 10:30 AM</div>
+            </div>
+            <div class="appt-badge">Upcoming</div>
+          </div>
+          <div class="appt-item">
+            <div class="appt-info">
+              <div class="doc">Dr. Rahul Gupta — General Physician</div>
+              <div class="time">Mar 15, 2026 · 11:00 AM</div>
+            </div>
+            <div class="appt-badge" style="background:#999;">Completed</div>
+          </div>
+        </div>
+        <button class="btn-green" style="margin-top:14px;" onclick="alert('Appointment booking coming soon!')">+ Book Appointment</button>
+      </div>
+
+      <!-- LAB REPORTS -->
+      <div class="page" id="page-labreports">
+        <div class="page-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          LAB REPORTS-
+        </div>
+        <div class="page-subtitle">View and manage your uploaded lab reports.</div>
+        <div class="card" style="color:#888;font-size:.88rem;">No lab reports saved yet. Use the Lab Report Analyzer to upload and analyze your reports.</div>
+        <button class="btn-green" style="margin-top:10px;" onclick="showPage('lab', null)">Go to Lab Report Analyzer</button>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="page-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+          SETTINGS-
+        </div>
+        <div class="page-subtitle">Manage your preferences.</div>
+        <div class="card">
+          <div class="card-title">Profile</div>
+          <label style="font-size:.83rem;font-weight:700;display:block;margin-bottom:4px;">Name</label>
+          <input style="border:2px solid var(--card);border-radius:8px;padding:8px 12px;width:100%;font-family:'Nunito',sans-serif;margin-bottom:10px;outline:none;" placeholder="Your name"/>
+          <label style="font-size:.83rem;font-weight:700;display:block;margin-bottom:4px;">Age</label>
+          <input type="number" style="border:2px solid var(--card);border-radius:8px;padding:8px 12px;width:120px;font-family:'Nunito',sans-serif;margin-bottom:10px;outline:none;" placeholder="Age"/>
+          <br/>
+          <button class="btn-green">Save</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Portal</div>
+          <button class="btn-green" onclick="backToPortal()" style="background:#e05353;">Switch Portal / Log Out</button>
+        </div>
+      </div>
+
+    </div><!-- end page-content -->
+
+    <div class="footer">Smarter HealthCare with AI</div>
+  </div>
+</div>
+
+<!-- Chatbot FAB -->
+<button class="chat-fab" title="AI Chat" onclick="alert('AI Chatbot coming soon!')">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#4caf6e" stroke-width="2">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M8 10h8M8 14h5"/>
+    <circle cx="8" cy="10" r=".5" fill="#4caf6e"/>
+    <circle cx="16" cy="10" r=".5" fill="#4caf6e"/>
+  </svg>
+</button>
+
+<!-- Add Medication Modal -->
+<div class="modal-overlay" id="med-modal">
+  <div class="modal">
+    <h3>Add Medication</h3>
+    <input id="med-name" placeholder="Medication name"/>
+    <input id="med-dose" placeholder="Dose (e.g. 500mg)"/>
+    <select id="med-freq">
+      <option>Once daily</option>
+      <option>Twice daily</option>
+      <option>Three times daily</option>
+      <option>As needed</option>
+    </select>
+    <input id="med-time" type="time"/>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeMedModal()">Cancel</button>
+      <button class="btn-green" onclick="addMed()">Add</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = "http://localhost:5000";
+function enterApp(role) {
+  try {
+    document.getElementById('portal-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    setTodayDate();
+
+    if (typeof loadMeds === "function") {
+      loadMeds();
+    }
+  } catch (e) {
+    console.error(e);
+    alert("Error loading app");
+  }
+}
+
+function backToPortal() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('portal-screen').style.display = 'flex';
+}
+
+// ── Navigation ──
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+  // FIX: correct class name
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  const page = document.getElementById('page-' + id);
+
+  if (!page) {
+    console.error("Page not found:", id);
+    return;
+  }
+
+  page.classList.add('active');
+
+  if (btn) btn.classList.add('active');
+}
+
+// ── Date ──
+function setTodayDate() {
+  const d = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('today-date').textContent = 'Today is ' + d.toLocaleDateString('en-IN', opts);
+}
+
+// ── Symptom Analyzer ──
+async function analyzeSymptoms() {
+  const text = document.getElementById('symptom-input').value.trim();
+
+  if (!text) return alert('Enter symptoms');
+
+  const result = document.getElementById('symptom-result');
+  result.className = 'ai-response visible';
+  result.innerHTML = '<span class="spinner"></span>Analyzing...';
+
+  try {
+    console.log("Sending request...");
+
+    const res = await fetch("http://localhost:5000/api/symptom", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+
+    console.log("Response received:", res);
+
+    const data = await res.json();
+
+    console.log("Data:", data);
+
+    function formatLabOutput(text) {
+  const lines = text.split("\n").filter(line => line.trim() !== "");
+
+  return lines.map(line => {
+    if (line.toLowerCase().includes("low") || line.includes("⚠️")) {
+      return `<div style="color:red; margin-bottom:6px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    if (line.toLowerCase().includes("risk")) {
+      return `<div style="color:orange; font-weight:600; margin-top:8px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    if (line.toLowerCase().includes("action")) {
+      return `<div style="color:green; font-weight:600; margin-top:4px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    return `<div style="color:green; margin-bottom:6px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+  }).join("");
+}
+
+result.innerHTML = formatLabOutput(data.reply);
+
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
+    result.innerHTML = 'Backend connection failed ❌';
+  }
+}
+
+// ── Lab ──
+async function analyzeLabReport() {
+  const fileInput = document.getElementById('lab-file');
+  const result = document.getElementById('lab-result');
+
+  if (!fileInput.files[0]) {
+    result.innerHTML = 'Upload file first';
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+
+  result.className = 'ai-response visible';
+  result.innerHTML = '<span class="spinner"></span>Analyzing...';
+
+  try {
+    const res = await fetch(`${API_URL}/api/lab`, {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await res.json();
+    function formatLabOutput(text) {
+  const lines = text.split("\n").filter(line => line.trim() !== "");
+
+  return lines.map(line => {
+    if (line.toLowerCase().includes("low") || line.includes("⚠️")) {
+      return `<div style="color:red; margin-bottom:6px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    if (line.toLowerCase().includes("risk")) {
+      return `<div style="color:orange; font-weight:600; margin-top:8px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    if (line.toLowerCase().includes("action")) {
+      return `<div style="color:green; font-weight:600; margin-top:4px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    return `<div style="color:green; margin-bottom:6px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+  }).join("");
+}
+
+result.innerHTML = formatLabOutput(data.reply);
+
+  } catch {
+    result.innerHTML = 'Error';
+  }
+}
+
+// ── MEDS ──
+function openMedModal() {
+  document.getElementById('med-modal').classList.add('open');
+}
+
+function closeMedModal() {
+  document.getElementById('med-modal').classList.remove('open');
+}
+
+async function addMed() {
+  const name = document.getElementById('med-name').value.trim();
+  const dose = document.getElementById('med-dose').value.trim();
+  const freq = document.getElementById('med-freq').value;
+  const time = document.getElementById('med-time').value;
+
+  if (!name) return alert('Enter medication');
+
+  await fetch(`${API_URL}/api/meds`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, dose, freq, time })
+  });
+
+  loadMeds();
+  closeMedModal();
+}
+
+async function loadMeds() {
+  try {
+    const res = await fetch(`${API_URL}/api/meds`);
+    const meds = await res.json();
+
+    const el = document.getElementById('med-list');
+
+    if (!meds.length) {
+      el.innerHTML = 'No medications';
+      return;
+    }
+
+    el.innerHTML = meds.map((m, i) => `
+      <div class="med-item">
+        <div>
+          <strong>${m.name}</strong><br/>
+          ${m.freq} ${m.time || ''}
+        </div>
+        <button onclick="deleteMed(${i})">X</button>
+      </div>
+    `).join('');
+
+  } catch {
+    console.log("Med load failed");
+  }
+}
+
+async function deleteMed(i) {
+  await fetch(`${API_URL}/api/meds/${i}`, { method: 'DELETE' });
+  loadMeds();
+}
+
+// ── Fitness ──
+async function generateFitnessPlan() {
+  const goal = document.getElementById('fitness-goal').value;
+  const result = document.getElementById('fitness-result');
+
+ result.className = 'ai-response visible';
+ result.innerHTML = 'Generating...';
+
+  const res = await fetch(`${API_URL}/api/fitness`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ goal })
+  });
+
+  const data = await res.json();
+  function formatLabOutput(text) {
+  const lines = text.split("\n").filter(line => line.trim() !== "");
+
+  return lines.map(line => {
+    if (line.toLowerCase().includes("low") || line.includes("⚠️")) {
+      return `<div style="color:red; margin-bottom:6px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    if (line.toLowerCase().includes("risk")) {
+      return `<div style="color:orange; font-weight:600; margin-top:8px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    if (line.toLowerCase().includes("action")) {
+      return `<div style="color:green; font-weight:600; margin-top:4px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    return `<div style="color:green; margin-bottom:6px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+  }).join("");
+}
+
+result.innerHTML = formatLabOutput(data.reply);
+}
+
+// ── Vitals ──
+async function analyzeVitals() {
+  const result = document.getElementById('vitals-result');
+
+  result.className = 'ai-response visible';
+  result.innerHTML = '<span class="spinner"></span>Analyzing...';
+
+  const summary = `
+BP: ${document.getElementById('bp-val').value}
+Heart Rate: ${document.getElementById('hr-val').value}
+Sugar: ${document.getElementById('bs-val').value}
+SpO2: ${document.getElementById('spo2-val').value}
+Temp: ${document.getElementById('temp-val').value}
+Weight: ${document.getElementById('wt-val').value}
+`;
+
+  try {
+    const res = await fetch(`${API_URL}/api/vitals`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ summary })
+    });
+
+    const data = await res.json();
+    function formatLabOutput(text) {
+  const lines = text.split("\n").filter(line => line.trim() !== "");
+
+  return lines.map(line => {
+    if (line.toLowerCase().includes("low") || line.includes("⚠️")) {
+      return `<div style="color:red; margin-bottom:6px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    if (line.toLowerCase().includes("risk")) {
+      return `<div style="color:orange; font-weight:600; margin-top:8px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    if (line.toLowerCase().includes("action")) {
+      return `<div style="color:green; font-weight:600; margin-top:4px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+    }
+    return `<div style="color:green; margin-bottom:6px;">${line.replace(/⚠️|🔴|🟢|✅/g, "")}</div>`;
+  }).join("");
+}
+
+result.innerHTML = formatLabOutput(data.reply);
+
+  } catch {
+    result.innerHTML = 'Error analyzing vitals';
+  }
+}
+</script>
+</body>
+</html>
